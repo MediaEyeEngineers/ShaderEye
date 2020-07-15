@@ -1,32 +1,25 @@
 QT       += core gui multimedia multimediawidgets
 
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 TARGET = ShaderEye
 TEMPLATE = app
 
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-INCLUDEPATH += "C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt"
-LIBS += -L"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\ucrt\x64"
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+DEFINES += QT_EYER_PLAYER
 
 SOURCES += \
     main.cpp \
     MainWindow.cpp \
+    View/GLView.cpp \
     dlgsettingcamera.cpp \
     cameraimage.cpp
 
 HEADERS += \
     MainWindow.h \
+    View/GLView.hpp \
     dlgsettingcamera.h \
     cameraimage.h
 
@@ -34,7 +27,54 @@ FORMS += \
     MainWindow.ui \
     dlgsettingcamera.ui
 
-# Default rules for deployment.
-#qnx: target.path = /tmp/$${TARGET}/bin
-#else: unix:!android: target.path = /opt/$${TARGET}/bin
-#!isEmpty(target.path): INSTALLS += target
+
+#### Eyer GL Shader
+HEADERS += \
+    EyerGLShader/Shader.hpp \
+    EyerGLShader/ShaderH.hpp
+
+SOURCES += \
+    EyerGLShader/Shader.cpp
+
+#### Eyer GL
+HEADERS += \
+    EyerGL/EyerGL.hpp \
+    EyerGL/GLHeader.h \
+    EyerGL/EyerGLCustomComponent/EyerGLCustomComponent.hpp
+
+SOURCES += \
+    EyerGL/EyerGLShader.cpp \
+    EyerGL/EyerGLProgram.cpp \
+    EyerGL/EyerGLTexture.cpp \
+    EyerGL/EyerGLVAO.cpp \
+    EyerGL/EyerGLFrameBuffer.cpp \
+    EyerGL/EyerGLDraw.cpp \
+    EyerGL/EyerGLComponent.cpp \
+    EyerGL/EyerGLCustomComponent/EyerGLJulia.cpp
+
+#### Eyer Core
+HEADERS += \
+    EyerCore/EyerCore.hpp \
+    EyerCore/EyerLinkedEle.hpp \
+    EyerCore/EyerLinkedList.hpp \
+    EyerCore/EyerLockQueue.hpp \
+    EyerCore/EyerLog.hpp \
+    EyerCore/EyerLRUMap.hpp \
+    EyerCore/EyerMap.hpp \
+    EyerCore/EyerMapEle.hpp \
+    EyerCore/EyerMath.hpp \
+    EyerCore/EyerQueue.hpp \
+    EyerCore/EyerString.hpp \
+    EyerCore/EyerTime.hpp
+
+
+SOURCES += \
+    EyerCore/EyerLog.cpp \
+    EyerCore/EyerMat.cpp \
+    EyerCore/EyerMat2x1.cpp \
+    EyerCore/EyerMat3x1.cpp \
+    EyerCore/EyerMat4x1.cpp \
+    EyerCore/EyerMat4x4.cpp \
+    EyerCore/EyerRand.cpp \
+    EyerCore/EyerString.cpp \
+    EyerCore/EyerTime.cpp \
