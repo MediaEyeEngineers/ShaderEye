@@ -19,7 +19,6 @@ DlgSettingCamera::~DlgSettingCamera()
     delete ui;
 }
 
-
 QString PixformatToString(QVideoFrame::PixelFormat format)
 {
     switch (format)
@@ -199,7 +198,7 @@ void DlgSettingCamera::btn_pbtn_startcapture_clicked()
 {
     QCameraViewfinderSettings ViewSet=settinglist.at(ui->combobox_param->currentIndex());
     qDebug()<<"frame rate"<< ViewSet.maximumFrameRate();
-      qDebug()<<" pix format"<< ViewSet.pixelFormat();
+    qDebug()<<" pix format"<< ViewSet.pixelFormat();
     m_selectedcamera->setViewfinderSettings(ViewSet);
 
     image=new CameraImage(this);
