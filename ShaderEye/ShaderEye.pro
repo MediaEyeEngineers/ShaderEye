@@ -14,18 +14,18 @@ SOURCES += \
     main.cpp \
     MainWindow.cpp \
     View/GLView.cpp \
-    dlgsettingcamera.cpp \
-    cameraimage.cpp
+    DlgSettingCamera.cpp \
+    CameraImage.cpp
 
 HEADERS += \
     MainWindow.h \
     View/GLView.hpp \
-    dlgsettingcamera.h \
-    cameraimage.h
+    DlgSettingCamera.h \
+    CameraImage.h
 
 FORMS += \
     MainWindow.ui \
-    dlgsettingcamera.ui
+    DlgSettingCamera.ui
 
 
 #### Eyer GL Shader

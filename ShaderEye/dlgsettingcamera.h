@@ -11,6 +11,14 @@ namespace Ui {
 class DlgSettingCamera;
 }
 
+typedef struct MediaInfo {
+    int width;
+    int height;
+    double maxFps;
+    double minFps;
+    QVideoFrame::PixelFormat format;
+} MediaInfo;
+
 class DlgSettingCamera : public QDialog
 {
     Q_OBJECT
@@ -18,16 +26,26 @@ class DlgSettingCamera : public QDialog
 public:
     explicit DlgSettingCamera(QWidget *parent = 0);
     ~DlgSettingCamera();
+    MediaInfo getMediaInfo();
 
 private slots:
-    void btn_getcamera_list();
-    void btn_pbtn_startcapture_clicked();
-    void on_capture_frame(const QVideoFrame & frame );
+    // btn click event
+    void cameraListClick();
+    // callback
+    void recvCaptureFrame(const QVideoFrame & frame);
+
+signals:
+    void readFrame(const uchar *data, qint64 startTime);
+
 private:
     Ui::DlgSettingCamera *ui;
     QCamera *m_selectedcamera;
     CameraImage * image;
-    QList<QCameraViewfinderSettings> settinglist;
+    QList<QCameraInfo> m_cameras;
+    MediaInfo m_mediaInfo;
+
+    uchar *m_frameData = nullptr;
+
 };
 
 #endif // DLGSETTINGCAMERA_H

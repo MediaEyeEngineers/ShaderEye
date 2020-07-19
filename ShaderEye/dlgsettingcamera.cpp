@@ -10,8 +10,25 @@ DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
     ui(new Ui::DlgSettingCamera)
 {
     ui->setupUi(this);
-    connect(ui->btn_GetCameraList,SIGNAL(clicked()),this,SLOT(btn_getcamera_list()));
-    connect(ui->pbtn_startcapture,SIGNAL(clicked()),this,SLOT(btn_pbtn_startcapture_clicked()));
+    connect(ui->btn_GetCameraList, SIGNAL(clicked()), this, SLOT(cameraListClick()));
+
+    // camera List
+    m_cameras = QCameraInfo::availableCameras();   //获取所有可以支持的camera,包括Integrated camera和uvc camera
+    qDebug() << m_cameras.length();
+    foreach (const QCameraInfo &camerasInfo, m_cameras) {
+        ui->comboBox_selcamera->addItem(camerasInfo.description());
+        qDebug()<<"camera:" << camerasInfo.description();
+        qDebug()<<"name:" << camerasInfo.deviceName();
+        /*QCamera* mCamera=new QCamera(camerasInfo);  //由camerainfo创建qcamera
+                       mCaptureVideoFrame=new CaptureVideoFrame(this);  //视频帧接收类,因为需要用自己写的opengl渲染,所以有了这个类,用来拿到相机的当前帧
+                       connect(mCaptureVideoFrame,SIGNAL(CaptureFrame(QVideoFrame)),this,SLOT(on_captrueframecallback(QVideoFrame)));
+                       mCaptureVideoFrame->setSource(mCamera);*/
+    }
+    qDebug() << "Loop End" << m_cameras.length();
+
+    if (m_cameras.length() > 0) {
+        ui->btn_GetCameraList->setEnabled(true);
+    }
 }
 
 DlgSettingCamera::~DlgSettingCamera()
@@ -131,84 +148,89 @@ QString PixformatToString(QVideoFrame::PixelFormat format)
     }
 }
 
-void DlgSettingCamera::btn_getcamera_list()
-{
+void DlgSettingCamera::cameraListClick() {
 
-    QList<QCameraInfo> cameras=QCameraInfo::availableCameras();   //获取所有可以支持的camera,包括Integrated camera和uvc camera
-    foreach (const QCameraInfo &camerasInfo, cameras)
-    {
-        ui->comboBox_selcamera->addItem(camerasInfo.description());
-        qDebug()<<"camera:"<<camerasInfo.description();
-        qDebug()<<"name:"<<camerasInfo.deviceName();
-        /*QCamera* mCamera=new QCamera(camerasInfo);  //由camerainfo创建qcamera
-                       mCaptureVideoFrame=new CaptureVideoFrame(this);  //视频帧接收类,因为需要用自己写的opengl渲染,所以有了这个类,用来拿到相机的当前帧
-                       connect(mCaptureVideoFrame,SIGNAL(CaptureFrame(QVideoFrame)),this,SLOT(on_captrueframecallback(QVideoFrame)));
-                       mCaptureVideoFrame->setSource(mCamera);*/
-    }
-    ui->comboBox_selcamera->addItem("bbbbb");
-
-
-
-    //取得选中的摄像头索引
-    QCameraInfo m_camerainfo;
-
-    QString sellcamera=ui->comboBox_selcamera->itemText(ui->comboBox_selcamera->currentIndex());
-    foreach(const QCameraInfo &camerasInfo, cameras)
-    {
-        if(sellcamera==camerasInfo.description())//如果符合
-        {
-            m_camerainfo=camerasInfo;
-            QCamera* camera=new QCamera(camerasInfo);
-            camera->start();
-            QList<QCameraViewfinderSettings > ViewSets = camera->supportedViewfinderSettings();
-            settinglist=ViewSets;
-           foreach (QCameraViewfinderSettings ViewSet, ViewSets)
-                {
-                    QString content;
-                    content.append(QString::fromStdWString(L"最大帧率="));
-                    content.append(QString::number(ViewSet.maximumFrameRate()));
-                    content.append(QString::fromStdWString(L"最小帧率="));
-                    content.append(QString::number(ViewSet.minimumFrameRate()));
-                    content.append(QString::fromStdWString(L"分辨率="));
-
-
-                    content.append(QString("(%1*%2)").arg(ViewSet.resolution().width()).arg(ViewSet.resolution().height()));
-                    content.append(QString::fromStdWString(L"输出格式="));
-                    content.append(PixformatToString(ViewSet.pixelFormat()));
-
-                    ui->combobox_param->addItem(content);
-                    qDebug() <<" max rate = " << ViewSet.maximumFrameRate() <<
-                                "min rate = "<< ViewSet.minimumFrameRate() <<
-                                QString::fromStdWString(L"分辨率=")<<
-                                ViewSet.resolution()<<\
-                                "Format="<<ViewSet.pixelFormat();
-                }
-            camera->stop();
-            delete camera;
-        }
-    }
-
-    QCameraInfo selcaminfo=cameras.at(ui->combobox_param->currentIndex());
-    m_selectedcamera=new QCamera(selcaminfo);
+    qDebug() << "currentIndex: " << ui->comboBox_selcamera->currentIndex();
+    QCameraInfo selcaminfo = m_cameras.at(ui->comboBox_selcamera->currentIndex());
+    m_selectedcamera = new QCamera(selcaminfo);
     m_selectedcamera->setCaptureMode(QCamera::CaptureVideo);
 
-}
+    qDebug() << "currentIndex: " << ui->comboBox_selcamera->currentIndex();
+    QCamera* camera = new QCamera(m_cameras[ui->comboBox_selcamera->currentIndex()]);
+    camera->start();
+    QList<QCameraViewfinderSettings> ViewSets = camera->supportedViewfinderSettings();
+    QCameraViewfinderSettings ViewSet = ViewSets[0];
+    ViewSet.setPixelFormat(QVideoFrame::Format_RGB24);
+    QSize sizeCamera;
+    sizeCamera.setWidth(640);
+    sizeCamera.setHeight(480);
+    ViewSet.setResolution(sizeCamera);
+    ViewSet.setMinimumFrameRate(20);
 
-void DlgSettingCamera::btn_pbtn_startcapture_clicked()
-{
-    QCameraViewfinderSettings ViewSet=settinglist.at(ui->combobox_param->currentIndex());
-    qDebug()<<"frame rate"<< ViewSet.maximumFrameRate();
-    qDebug()<<" pix format"<< ViewSet.pixelFormat();
+    qDebug() << "frame rate" << ViewSet.maximumFrameRate();
+    qDebug() << " pix format" << ViewSet.pixelFormat();
     m_selectedcamera->setViewfinderSettings(ViewSet);
 
-    image=new CameraImage(this);
+    // set media info
+    m_mediaInfo.width = ViewSet.resolution().width();
+    m_mediaInfo.height = ViewSet.resolution().height();
+    m_mediaInfo.maxFps = ViewSet.maximumFrameRate();
+    m_mediaInfo.minFps = ViewSet.minimumFrameRate();
+    m_mediaInfo.format = ViewSet.pixelFormat();
+
+
+    image = new CameraImage(this);
     image->setSource(m_selectedcamera);
-    connect(image,SIGNAL(CaptureFrame(const QVideoFrame&)),
-            this,SLOT(on_capture_frame(const QVideoFrame &)));
+    connect(image, SIGNAL(CaptureFrame(const QVideoFrame&)),
+            this, SLOT(recvCaptureFrame(const QVideoFrame &)));
+
+
     m_selectedcamera->start();
 }
 
-void DlgSettingCamera::on_capture_frame(const QVideoFrame &_frame)
-{
-        qDebug()<<_frame.pixelFormat();
+// frame.bytesPerLine() * frame.height()
+
+MediaInfo DlgSettingCamera::getMediaInfo() {
+    return m_mediaInfo;
 }
+
+void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
+{
+    if (m_frameData != nullptr) {
+        delete [] m_frameData;
+        m_frameData = nullptr;
+    }
+//    qDebug() << "=================== Frame ======================";
+//    qDebug() << "_frame.width: " << _frame.width();
+//    qDebug() << "_frame.height: " << _frame.height();
+//    qDebug() << "_frame.pixelFormat" << _frame.pixelFormat();
+//    qDebug() << "_frame.bits" << _frame.bits();
+//    qDebug() << "_frame.startTime" << _frame.startTime();
+
+    int width = _frame.width();
+    int height = _frame.height();
+    int linesize = _frame.bytesPerLine();
+    int standardLinesize = width * 3;
+
+    // set frame
+    m_frameData = new uchar[width * height * 3];
+    const uchar *framePtr = _frame.bits();
+
+    for (int i = 0; i < height; i++) {
+        memcpy(m_frameData + standardLinesize * i,
+               framePtr + i * linesize,
+               standardLinesize);
+    }
+
+    readFrame(m_frameData, _frame.startTime());
+    qDebug() << "m_frameData======> 1";
+}
+
+
+
+
+
+
+
+
+

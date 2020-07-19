@@ -3,6 +3,7 @@
 
 #include "View/GLView.hpp"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -10,10 +11,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     GLView * glView = new GLView(this);
-    ui->gl_view_layout->addWidget(glView);
+    ui->RenderLayout->addWidget(glView);
+
+    dlgCameraControl = new DlgSettingCamera(this);
+    connect(ui->CameraBtn, SIGNAL(clicked()), this, SLOT(mainCameraOpenClick()));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::mainCameraOpenClick() {
+    dlgCameraControl->exec();
 }
