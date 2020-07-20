@@ -214,12 +214,27 @@ void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
         delete [] m_frameData;
         m_frameData = nullptr;
     }
-//    qDebug() << "=================== Frame ======================";
-//    qDebug() << "_frame.width: " << _frame.width();
-//    qDebug() << "_frame.height: " << _frame.height();
-//    qDebug() << "_frame.pixelFormat" << _frame.pixelFormat();
-//    qDebug() << "_frame.bits" << _frame.bits();
-//    qDebug() << "_frame.startTime" << _frame.startTime();
+
+    /*
+    QThread *m_workerThread = new CnmernSelThread();
+    CnmernSelThread *worker = new CnmernSelThread();
+    worker->setInput(m_out420Data, m_out420Data_2nd,
+                     w, h, cspace);
+    worker->moveToThread(m_workerThread);
+
+    connect(m_workerThread, &QThread::started, worker, &IQAThread::start1);
+    connect(worker, SIGNAL(workStart()), this, SLOT(workStart()));
+    connect(worker,
+            SIGNAL(workFinished(double, double, double, double, double, double, double)),
+            this,
+            SLOT(workFinished(double, double, double, double, double, double, double)));
+
+    connect(worker, &CnmernSelThread::workFinished, worker, &CnmernSelThread::deleteLater);
+    connect(worker, &CnmernSelThread::workFinished, m_workerThread, &QThread::quit);
+    connect(m_workerThread, &QThread::finished, m_workerThread, &QThread::deleteLater);
+
+    m_workerThread->start();
+    */
 
     int width = _frame.width();
     int height = _frame.height();

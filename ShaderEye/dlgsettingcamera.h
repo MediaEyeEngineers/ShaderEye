@@ -6,6 +6,9 @@
 
 #include <QList>
 #include <QCameraViewfinderSettings>
+
+#include "Util/CnmernSelThread.h"
+
 class CameraImage;
 namespace Ui {
 class DlgSettingCamera;
