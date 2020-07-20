@@ -9,3 +9,5 @@ commitMsg=${1:-"push at `date`"}
 git add -A
 git commit -m "${commitMsg}"
 git push origin master
+
+echo "FIN"
