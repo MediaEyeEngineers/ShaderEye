@@ -21,12 +21,8 @@ DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
     qDebug() << m_cameras.length();
     foreach (const QCameraInfo &camerasInfo, m_cameras) {
         ui->comboBox_selcamera->addItem(camerasInfo.description());
-        qDebug()<<"camera:" << camerasInfo.description();
-        qDebug()<<"name:" << camerasInfo.deviceName();
-        /*QCamera* mCamera=new QCamera(camerasInfo);  //由camerainfo创建qcamera
-                       mCaptureVideoFrame=new CaptureVideoFrame(this);  //视频帧接收类,因为需要用自己写的opengl渲染,所以有了这个类,用来拿到相机的当前帧
-                       connect(mCaptureVideoFrame,SIGNAL(CaptureFrame(QVideoFrame)),this,SLOT(on_captrueframecallback(QVideoFrame)));
-                       mCaptureVideoFrame->setSource(mCamera);*/
+        qDebug() << "camera:" << camerasInfo.description();
+        qDebug() << "name:" << camerasInfo.deviceName();
     }
     qDebug() << "Loop End" << m_cameras.length();
 
@@ -38,118 +34,6 @@ DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
 DlgSettingCamera::~DlgSettingCamera()
 {
     delete ui;
-}
-
-QString PixformatToString(QVideoFrame::PixelFormat format)
-{
-    switch (format)
-    {
-    case QVideoFrame::Format_Invalid :
-        return "Format_Invalid";
-        break;
-    case QVideoFrame::Format_ARGB32:
-        return "Format_ARGB32";
-        break;
-    case QVideoFrame::Format_ARGB32_Premultiplied:
-        return "Format_ARGB32_Premultiplied";
-        break;
-    case QVideoFrame::Format_RGB32:
-        return "Format_RGB32";
-        break;
-    case QVideoFrame::Format_RGB24:
-        return "Format_RGB24";
-        break;
-    case QVideoFrame::Format_RGB565:
-        return "Format_RGB565";
-        break;
-    case QVideoFrame::Format_RGB555:
-        return "Format_RGB555";
-        break;
-    case QVideoFrame::Format_ARGB8565_Premultiplied:
-        return "Format_ARGB8565_Premultiplied";
-        break;
-    case QVideoFrame::Format_BGRA32:
-        return "Format_BGRA32";
-        break;
-    case QVideoFrame::Format_BGRA32_Premultiplied:
-        return "Format_BGRA32_Premultiplied";
-        break;
-    case QVideoFrame::Format_BGR32:
-        return "Format_BGR32";
-        break;
-    case QVideoFrame::Format_BGR24:
-        return "Format_BGR24";
-        break;
-    case QVideoFrame::Format_BGR565:
-        return "Format_BGR565";
-        break;
-    case QVideoFrame::Format_BGR555:
-        return "Format_BGR555";
-        break;
-    case QVideoFrame::Format_BGRA5658_Premultiplied:
-        return "Format_BGRA5658_Premultiplied";
-        break;
-
-    case QVideoFrame::Format_AYUV444:
-        return "Format_AYUV444";
-        break;
-    case QVideoFrame::Format_AYUV444_Premultiplied:
-        return "Format_AYUV444_Premultiplied";
-        break;
-    case QVideoFrame::Format_YUV444:
-        return "Format_YUV444";
-        break;
-    case QVideoFrame::Format_YUV420P:
-        return "Format_YUV420P";
-        break;
-    case QVideoFrame::Format_YV12:
-        return "Format_YV12";
-        break;
-    case QVideoFrame::Format_UYVY:
-        return "Format_UYVY";
-        break;
-    case QVideoFrame::Format_YUYV:
-        return "Format_YUYV";
-        break;
-    case QVideoFrame::Format_NV12:
-        return "Format_NV12";
-        break;
-    case QVideoFrame::Format_NV21:
-        return "Format_NV21";
-        break;
-    case QVideoFrame::Format_IMC1:
-        return "Format_IMC1";
-        break;
-    case QVideoFrame::Format_IMC2:
-        break;
-    case QVideoFrame::Format_IMC3:
-        return "Format_IMC3";
-        break;
-    case QVideoFrame::Format_IMC4:
-        return "Format_IMC4";
-        break;
-    case QVideoFrame::Format_Y8:
-        return "Format_Y8";
-        break;
-    case QVideoFrame::Format_Y16:
-        return "Format_Y16";
-        break;
-    case QVideoFrame::Format_Jpeg:
-        return "Format_Jpeg";
-        break;
-
-    case QVideoFrame::Format_CameraRaw:
-        return "Format_CameraRaw";
-        break;
-    case QVideoFrame::Format_AdobeDng:
-        return "Format_AdobeDng";
-        break;
-    case   QVideoFrame::NPixelFormats:
-        return "NPixelFormats";
-        break;
-    default:
-        break;
-    }
 }
 
 void DlgSettingCamera::cameraListClick() {

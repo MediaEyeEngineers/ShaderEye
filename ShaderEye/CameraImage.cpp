@@ -38,21 +38,9 @@ QList<QVideoFrame::PixelFormat> CameraImage::supportedPixelFormats(QAbstractVide
            << QVideoFrame::Format_Jpeg
            << QVideoFrame::Format_CameraRaw
            << QVideoFrame::Format_AdobeDng;
-      // return list;
 }
 
-CameraImage::CameraImage(QObject *parent): QAbstractVideoSurface(parent)
-{
-//    QString path = QDir::currentPath();
-//#ifdef Q_OS_WIN
-//    path=path+"\\file.rgb";
-//#endif
-//#ifdef Q_OS_MACOS
-//     path=path+"/file.rgb";
-//#endif
-//    m_file=new QFile(path);
-//    if(false== m_file->open(QIODevice::WriteOnly | QIODevice::Truncate))
-//        qDebug()<<"当前路路径错误";
+CameraImage::CameraImage(QObject *parent): QAbstractVideoSurface(parent) {
 }
 
 void CameraImage::setVideoFrame(const QVideoFrame &frame) {
@@ -66,7 +54,6 @@ void CameraImage::setSource(QCamera *pCamera)
 
 bool CameraImage::present(const QVideoFrame &frame)
 {
-        // 处理捕获的帧
       if(frame.isMapped())
       {
           setVideoFrame(frame);
