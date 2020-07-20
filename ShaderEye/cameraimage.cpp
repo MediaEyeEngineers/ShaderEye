@@ -1,4 +1,4 @@
-﻿#include "cameraimage.h"
+﻿#include "CameraImage.h"
 
 #include <QCamera>
 #include <QDir>
@@ -41,32 +41,22 @@ QList<QVideoFrame::PixelFormat> CameraImage::supportedPixelFormats(QAbstractVide
       // return list;
 }
 
-CameraImage::CameraImage(QObject *parent): QAbstractVideoSurface(parent),write_one(false)
+CameraImage::CameraImage(QObject *parent): QAbstractVideoSurface(parent)
 {
-    QString path=QDir::currentPath();
-#ifdef Q_OS_WIN
-    path=path+"\\file.rgb";
-#endif
-#ifdef Q_OS_MACOS
-     path=path+"/file.rgb";
-#endif
-    m_file=new QFile(path);
-    if(false== m_file->open(QIODevice::WriteOnly | QIODevice::Truncate))
-        qDebug()<<"当前路路径错误";
+//    QString path = QDir::currentPath();
+//#ifdef Q_OS_WIN
+//    path=path+"\\file.rgb";
+//#endif
+//#ifdef Q_OS_MACOS
+//     path=path+"/file.rgb";
+//#endif
+//    m_file=new QFile(path);
+//    if(false== m_file->open(QIODevice::WriteOnly | QIODevice::Truncate))
+//        qDebug()<<"当前路路径错误";
 }
 
-void CameraImage::setVideoFrame(const QVideoFrame &frame)
-{
-     //Q_UNUSED(frame);
-      int a=0;
-    if(write_one==false)
-    {
-        write_one=true;
-        m_file->write((char*)frame.bits(),frame.bytesPerLine()*frame.height());
-        m_file->close();
-    }
-
-      emit CaptureFrame(frame);
+void CameraImage::setVideoFrame(const QVideoFrame &frame) {
+    emit CaptureFrame(frame);
 }
 
 void CameraImage::setSource(QCamera *pCamera)

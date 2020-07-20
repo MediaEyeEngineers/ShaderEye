@@ -37,14 +37,7 @@ signals:
     //视频帧捕获信号
     void CaptureFrame(const QVideoFrame &frame);
 private:
-    /*
-     * 测试用代码保存 获取的第一针的图像为一个文件
-     */
-    bool write_one;
-    /*
-     * 使用m_file 保存文件
-     */
-     QFile * m_file;
+    // todo
 };
 
 #endif // CAMERAIMAGE_H

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "DlgSettingCamera.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    // btn click event
+    void mainCameraOpenClick();
+    // DlgSettingCamera signals
+    void readFrame(const uchar *data, qint64 startTime);
+
 private:
     Ui::MainWindow *ui;
+    DlgSettingCamera *dlgCameraControl = nullptr;
 };
 #endif // MAINWINDOW_H

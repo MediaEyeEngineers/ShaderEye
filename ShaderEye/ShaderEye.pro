@@ -11,21 +11,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_EYER_PLAYER
 
 SOURCES += \
+    Util/CnmernSelThread.cpp \
     main.cpp \
     MainWindow.cpp \
     View/GLView.cpp \
-    dlgsettingcamera.cpp \
-    cameraimage.cpp
+    DlgSettingCamera.cpp \
+    CameraImage.cpp
 
 HEADERS += \
+    CommonSetting.h \
     MainWindow.h \
+    Util/CnmernSelThread.h \
     View/GLView.hpp \
-    dlgsettingcamera.h \
-    cameraimage.h
+    DlgSettingCamera.h \
+    CameraImage.h
 
 FORMS += \
     MainWindow.ui \
-    dlgsettingcamera.ui
+    DlgSettingCamera.ui
 
 
 #### Eyer GL Shader

@@ -6,10 +6,20 @@
 
 #include <QList>
 #include <QCameraViewfinderSettings>
+
+#include "Util/CnmernSelThread.h"
+
 class CameraImage;
 namespace Ui {
 class DlgSettingCamera;
 }
+
+typedef struct MediaInfo {
+    int width;
+    int height;
+    double fps;
+    QVideoFrame::PixelFormat format;
+} MediaInfo;
 
 class DlgSettingCamera : public QDialog
 {
@@ -18,16 +28,27 @@ class DlgSettingCamera : public QDialog
 public:
     explicit DlgSettingCamera(QWidget *parent = 0);
     ~DlgSettingCamera();
+    const MediaInfo setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format);
+    const MediaInfo getMediaInfo();
 
 private slots:
-    void btn_getcamera_list();
-    void btn_pbtn_startcapture_clicked();
-    void on_capture_frame(const QVideoFrame & frame );
+    // btn click event
+    void cameraListClick();
+    // callback
+    void recvCaptureFrame(const QVideoFrame & frame);
+
+signals:
+    void readFrame(const uchar *data, qint64 startTime);
+
 private:
     Ui::DlgSettingCamera *ui;
-    QCamera *m_selectedcamera;
-    CameraImage * image;
-    QList<QCameraViewfinderSettings> settinglist;
+    QCamera *m_selectedcamera = nullptr;
+    CameraImage *m_image = nullptr;
+    QList<QCameraInfo> m_cameras;
+    MediaInfo m_mediaInfo;
+
+    uchar *m_frameData = nullptr;
+
 };
 
 #endif // DLGSETTINGCAMERA_H
