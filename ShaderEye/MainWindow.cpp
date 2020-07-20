@@ -32,13 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dlgCameraControl, SIGNAL(readFrame(const uchar *, qint64)),
             this, SLOT(readFrame(const uchar *, qint64)));
 
-//    QPalette p_font = ui->VertexText->palette();
-//    p_font.setColor(QPalette::Active, QPalette::Base, Qt::yellow);
-//    p_font.setColor(QPalette::Inactive, QPalette::Base, Qt::yellow);
-//    p_font.setColor(QPalette::Normal, QPalette::Base, Qt::yellow);
-//    ui->VertexText->setPalette(p_font);
-//    ui->FragText->setPalette(p_font);
-
 
     /**
      * @todo 这里设置Opengl？
