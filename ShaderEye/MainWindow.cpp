@@ -15,8 +15,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle(TITLE_MAIN_WIN);
 
-    GLView * glView = new GLView(this);
-    ui->RenderLayout->addWidget(glView);
+    GLView * glViewRender = new GLView(this);
+    glViewRender->setGeometry(0, 0, 400, 400);
+    ui->RenderLayout->addWidget(glViewRender);
+
+    GLView * glViewCapture = new GLView(this);
+    ui->CaptureLayout->addWidget(glViewCapture);
 
     // Camera
     dlgCameraControl = new DlgSettingCamera(this);
