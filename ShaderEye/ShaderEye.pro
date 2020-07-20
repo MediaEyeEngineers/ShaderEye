@@ -11,18 +11,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_EYER_PLAYER
 
 SOURCES += \
-    EyerGL/EyerGLCustomComponent/EyerGLChessboard.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLFrameDraw.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLMVPTextureDraw.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLSingleTextureDraw.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLTest.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLTextDraw.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLTextMeshDraw.cpp \
-    EyerGL/EyerGLCustomComponent/EyerGLYUV2TextureComponent.cpp \
-    EyerGL/EyerGLRenderTask/EyerGLRenderTask.cpp \
-    EyerGL/EyerGLRenderTask/EyerGLRenderTaskQueue.cpp \
-    EyerGL/EyerGLRenderTask/JuliaRenderTask.cpp \
-    EyerGL/EyerGLRenderTask/YUVRenderTask.cpp \
     Util/CnmernSelThread.cpp \
     main.cpp \
     MainWindow.cpp \
@@ -32,13 +20,11 @@ SOURCES += \
 
 HEADERS += \
     CommonSetting.h \
-    EyerGL/EyerGLRenderTask/EyerGLRenderTask.hpp \
     MainWindow.h \
     Util/CnmernSelThread.h \
     View/GLView.hpp \
     DlgSettingCamera.h \
-    CameraImage.h \
-    dlgsettingcamera.h
+    CameraImage.h
 
 FORMS += \
     MainWindow.ui \
