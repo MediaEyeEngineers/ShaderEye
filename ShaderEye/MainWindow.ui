@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,8 +33,26 @@
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+background-color: #ff0000;
+border-style: outset;
+border-width: 2px;
+border-radius: 6px;
+border-color: beige;
+font: bold 13px;
+min-width: 8em;
+padding: 4px;
+color:white;
+}
+
+QPushButton:pressed {
+background-color: green;
+color:black;
+}</string>
+          </property>
           <property name="text">
-           <string>Camera</string>
+           <string>Open Camera</string>
           </property>
          </widget>
         </item>
@@ -45,6 +63,24 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+background-color: #ff0000;
+border-style: outset;
+border-width: 2px;
+border-radius: 6px;
+border-color: beige;
+font: bold 13px;
+min-width: 8em;
+padding: 4px;
+color:white;
+}
+
+QPushButton:pressed {
+background-color: green;
+color:black;
+}</string>
           </property>
           <property name="text">
            <string>Render Compile</string>

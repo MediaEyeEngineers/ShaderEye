@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>533</height>
+    <width>350</width>
+    <height>200</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>15</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -32,21 +43,47 @@
      <height>12</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
    <property name="text">
-    <string>选择摄像头</string>
+    <string>Camera</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_GetCameraList">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>40</y>
-     <width>101</width>
+     <x>110</x>
+     <y>150</y>
+     <width>140</width>
      <height>31</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+background-color: #ff0000;
+border-style: outset;
+border-width: 2px;
+border-radius: 6px;
+border-color: beige;
+font: bold 13px;
+min-width: 8em;
+padding: 4px;
+color:white;
+}
+
+QPushButton:pressed {
+background-color: green;
+color:black;
+}</string>
+   </property>
    <property name="text">
-    <string>选择</string>
+    <string>Open</string>
    </property>
   </widget>
  </widget>
