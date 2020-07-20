@@ -147,6 +147,11 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <underline>false</underline>
+               </font>
+              </property>
               <property name="plainText">
                <string>attribute vec4 position;
 attribute vec4 inputTextureCoordinate;
