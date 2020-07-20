@@ -1,8 +1,10 @@
-﻿#include "dlgsettingcamera.h"
+﻿#include "DlgSettingCamera.h"
 #include "ui_dlgsettingcamera.h"
-#include "cameraimage.h"
+#include "CameraImage.h"
 #include <QVideoFrame>
 #include <QCameraInfo>
+
+#include "CommonSetting.h"
 
 DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
     m_selectedcamera(NULL),
@@ -10,6 +12,8 @@ DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
     ui(new Ui::DlgSettingCamera)
 {
     ui->setupUi(this);
+    this->setWindowTitle(TITLE_CAMOPEN_WIN);
+
     connect(ui->btn_GetCameraList, SIGNAL(clicked()), this, SLOT(cameraListClick()));
 
     // camera List
@@ -160,37 +164,47 @@ void DlgSettingCamera::cameraListClick() {
     camera->start();
     QList<QCameraViewfinderSettings> ViewSets = camera->supportedViewfinderSettings();
     QCameraViewfinderSettings ViewSet = ViewSets[0];
-    ViewSet.setPixelFormat(QVideoFrame::Format_RGB24);
+
+    // setting mediaInfo
+    ViewSet.setPixelFormat(m_mediaInfo.format); // QVideoFrame::Format_RGB24
     QSize sizeCamera;
-    sizeCamera.setWidth(640);
-    sizeCamera.setHeight(480);
+    sizeCamera.setWidth(m_mediaInfo.width);
+    sizeCamera.setHeight(m_mediaInfo.height);
     ViewSet.setResolution(sizeCamera);
-    ViewSet.setMinimumFrameRate(20);
+    ViewSet.setMinimumFrameRate(m_mediaInfo.fps);
+    ViewSet.setMaximumFrameRate(m_mediaInfo.fps);
 
     qDebug() << "frame rate" << ViewSet.maximumFrameRate();
     qDebug() << " pix format" << ViewSet.pixelFormat();
     m_selectedcamera->setViewfinderSettings(ViewSet);
 
-    // set media info
-    m_mediaInfo.width = ViewSet.resolution().width();
-    m_mediaInfo.height = ViewSet.resolution().height();
-    m_mediaInfo.maxFps = ViewSet.maximumFrameRate();
-    m_mediaInfo.minFps = ViewSet.minimumFrameRate();
-    m_mediaInfo.format = ViewSet.pixelFormat();
 
 
-    image = new CameraImage(this);
-    image->setSource(m_selectedcamera);
-    connect(image, SIGNAL(CaptureFrame(const QVideoFrame&)),
+    if (m_image != nullptr) {
+        delete m_image;
+        m_image = nullptr;
+    }
+    m_image = new CameraImage(this);
+    m_image->setSource(m_selectedcamera);
+    connect(m_image, SIGNAL(CaptureFrame(const QVideoFrame&)),
             this, SLOT(recvCaptureFrame(const QVideoFrame &)));
 
 
     m_selectedcamera->start();
+
+    done(0);
 }
 
-// frame.bytesPerLine() * frame.height()
+const MediaInfo DlgSettingCamera::setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format) {
+    // set media info
+    m_mediaInfo.width = w;
+    m_mediaInfo.height = h;
+    m_mediaInfo.fps = fps;
+    m_mediaInfo.format = format;
+    return m_mediaInfo;
+}
 
-MediaInfo DlgSettingCamera::getMediaInfo() {
+const MediaInfo DlgSettingCamera::getMediaInfo() {
     return m_mediaInfo;
 }
 

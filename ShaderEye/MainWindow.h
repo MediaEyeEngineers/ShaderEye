@@ -19,6 +19,8 @@ public:
 private slots:
     // btn click event
     void mainCameraOpenClick();
+    // DlgSettingCamera signals
+    void readFrame(const uchar *data, qint64 startTime);
 
 private:
     Ui::MainWindow *ui;

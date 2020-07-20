@@ -14,8 +14,7 @@ class DlgSettingCamera;
 typedef struct MediaInfo {
     int width;
     int height;
-    double maxFps;
-    double minFps;
+    double fps;
     QVideoFrame::PixelFormat format;
 } MediaInfo;
 
@@ -26,7 +25,8 @@ class DlgSettingCamera : public QDialog
 public:
     explicit DlgSettingCamera(QWidget *parent = 0);
     ~DlgSettingCamera();
-    MediaInfo getMediaInfo();
+    const MediaInfo setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format);
+    const MediaInfo getMediaInfo();
 
 private slots:
     // btn click event
@@ -39,8 +39,8 @@ signals:
 
 private:
     Ui::DlgSettingCamera *ui;
-    QCamera *m_selectedcamera;
-    CameraImage * image;
+    QCamera *m_selectedcamera = nullptr;
+    CameraImage *m_image = nullptr;
     QList<QCameraInfo> m_cameras;
     MediaInfo m_mediaInfo;
 

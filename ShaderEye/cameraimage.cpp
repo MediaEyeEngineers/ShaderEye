@@ -1,4 +1,4 @@
-﻿#include "cameraimage.h"
+﻿#include "CameraImage.h"
 
 #include <QCamera>
 #include <QDir>
