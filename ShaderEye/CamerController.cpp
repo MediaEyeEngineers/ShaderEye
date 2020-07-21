@@ -1,4 +1,4 @@
-﻿#include "DlgSettingCamera.h"
+﻿#include "CameraController.h"
 #include "ui_dlgsettingcamera.h"
 #include "CameraImage.h"
 #include <QVideoFrame>
@@ -6,7 +6,7 @@
 
 #include "CommonSetting.h"
 
-DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
+CameraController::CameraController(QWidget *parent) :
     m_selectedcamera(NULL),
     QDialog(parent),
     ui(new Ui::DlgSettingCamera)
@@ -31,12 +31,12 @@ DlgSettingCamera::DlgSettingCamera(QWidget *parent) :
     }
 }
 
-DlgSettingCamera::~DlgSettingCamera()
+CameraController::~CameraController()
 {
     delete ui;
 }
 
-void DlgSettingCamera::cameraListClick() {
+void CameraController::cameraListClick() {
 
     qDebug() << "currentIndex: " << ui->comboBox_selcamera->currentIndex();
     QCameraInfo selcaminfo = m_cameras.at(ui->comboBox_selcamera->currentIndex());
@@ -75,11 +75,10 @@ void DlgSettingCamera::cameraListClick() {
 
 
     m_selectedcamera->start();
-
     done(0);
 }
 
-const MediaInfo DlgSettingCamera::setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format) {
+const MediaInfo CameraController::setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format) {
     // set media info
     m_mediaInfo.width = w;
     m_mediaInfo.height = h;
@@ -88,41 +87,24 @@ const MediaInfo DlgSettingCamera::setMediaInfo(int w, int h, int fps, QVideoFram
     return m_mediaInfo;
 }
 
-const MediaInfo DlgSettingCamera::getMediaInfo() {
+const MediaInfo CameraController::getMediaInfo() {
     return m_mediaInfo;
 }
 
-void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
+void CameraController::recvCaptureFrame(const QVideoFrame &_frame)
 {
+    /*
     if (m_frameData != nullptr) {
         delete [] m_frameData;
         m_frameData = nullptr;
     }
-
-    /*
-    QThread *m_workerThread = new CnmernSelThread();
-    CnmernSelThread *worker = new CnmernSelThread();
-    worker->setInput(m_out420Data, m_out420Data_2nd,
-                     w, h, cspace);
-    worker->moveToThread(m_workerThread);
-
-    connect(m_workerThread, &QThread::started, worker, &IQAThread::start1);
-    connect(worker, SIGNAL(workStart()), this, SLOT(workStart()));
-    connect(worker,
-            SIGNAL(workFinished(double, double, double, double, double, double, double)),
-            this,
-            SLOT(workFinished(double, double, double, double, double, double, double)));
-
-    connect(worker, &CnmernSelThread::workFinished, worker, &CnmernSelThread::deleteLater);
-    connect(worker, &CnmernSelThread::workFinished, m_workerThread, &QThread::quit);
-    connect(m_workerThread, &QThread::finished, m_workerThread, &QThread::deleteLater);
-
-    m_workerThread->start();
     */
 
     int width = _frame.width();
     int height = _frame.height();
     int linesize = _frame.bytesPerLine();
+
+    /*
     int standardLinesize = width * 3;
 
     // set frame
@@ -134,8 +116,10 @@ void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
                framePtr + i * linesize,
                standardLinesize);
     }
+    */
 
-    readFrame(m_frameData, _frame.startTime());
+    // readFrame(m_frameData, _frame.startTime());
+    readFrame(_frame.bits(), _frame.pixelFormat(), linesize, height);
     qDebug() << "m_frameData======> 1";
 }
 

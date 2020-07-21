@@ -23,13 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->CaptureLayout->addWidget(glViewCapture);
 
     // Camera
-    dlgCameraControl = new DlgSettingCamera(this);
-    const MediaInfo mediaInfo = dlgCameraControl->setMediaInfo(CAM_WIDTH, CAM_HEIGHT, CAM_FPS, CAM_FORMAT);
+    cameraControl = new CameraController(this);
+    const MediaInfo mediaInfo = cameraControl->setMediaInfo(CAM_WIDTH, CAM_HEIGHT, CAM_FPS, CAM_FORMAT);
 
     // btn
     connect(ui->CameraBtn, SIGNAL(clicked()), this, SLOT(mainCameraOpenClick()));
     // readFrame
-    connect(dlgCameraControl, SIGNAL(readFrame(const uchar *, qint64)),
+    connect(cameraControl, SIGNAL(readFrame(const uchar *, qint64)),
             this, SLOT(readFrame(const uchar *, qint64)));
 
 
@@ -48,7 +48,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::mainCameraOpenClick() {
-    dlgCameraControl->exec();
+    cameraControl->exec();
 }
 
 /**

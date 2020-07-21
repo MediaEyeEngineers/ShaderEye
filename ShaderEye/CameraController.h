@@ -21,13 +21,13 @@ typedef struct MediaInfo {
     QVideoFrame::PixelFormat format;
 } MediaInfo;
 
-class DlgSettingCamera : public QDialog
+class CameraController : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingCamera(QWidget *parent = 0);
-    ~DlgSettingCamera();
+    explicit CameraController(QWidget *parent = 0);
+    ~CameraController();
     const MediaInfo setMediaInfo(int w, int h, int fps, QVideoFrame::PixelFormat format);
     const MediaInfo getMediaInfo();
 
@@ -38,7 +38,7 @@ private slots:
     void recvCaptureFrame(const QVideoFrame & frame);
 
 signals:
-    void readFrame(const uchar *data, qint64 startTime);
+    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height);
 
 private:
     Ui::DlgSettingCamera *ui;
@@ -47,7 +47,7 @@ private:
     QList<QCameraInfo> m_cameras;
     MediaInfo m_mediaInfo;
 
-    uchar *m_frameData = nullptr;
+    // uchar *m_frameData = nullptr;
 
 };
 
