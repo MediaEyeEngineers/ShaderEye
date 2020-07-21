@@ -120,13 +120,18 @@ void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
     m_workerThread->start();
     */
 
+    qDebug() << _frame.pixelFormat() << endl;
+
     int width = _frame.width();
     int height = _frame.height();
     int linesize = _frame.bytesPerLine();
-    int standardLinesize = width * 3;
+
+    int standardLinesize = width * 4;
+
+    // qDebug() << width << "=" << height << "=" << linesize << endl;
 
     // set frame
-    m_frameData = new uchar[width * height * 3];
+    m_frameData = new uchar[width * height * 4];
     const uchar *framePtr = _frame.bits();
 
     for (int i = 0; i < height; i++) {
@@ -136,7 +141,7 @@ void DlgSettingCamera::recvCaptureFrame(const QVideoFrame &_frame)
     }
 
     readFrame(m_frameData, _frame.startTime());
-    qDebug() << "m_frameData======> 1";
+    // qDebug() << "m_frameData======> 1";
 }
 
 
