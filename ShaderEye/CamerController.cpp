@@ -17,7 +17,7 @@ CameraController::CameraController(QWidget *parent) :
     connect(ui->GetCameraBtn, SIGNAL(clicked()), this, SLOT(cameraListClick()));
 
     // camera List
-    m_cameras = QCameraInfo::availableCameras();   //获取所有可以支持的camera,包括Integrated camera和uvc camera
+    m_cameras = QCameraInfo::availableCameras();
     qDebug() << m_cameras.length();
     foreach (const QCameraInfo &camerasInfo, m_cameras) {
         ui->comboBox_selcamera->addItem(camerasInfo.description());
