@@ -27,8 +27,8 @@ HEADERS += \
     CameraImage.h
 
 FORMS += \
-    MainWindow.ui \
-    DlgSettingCamera.ui
+    CameraController.ui \
+    MainWindow.ui
 
 
 #### Eyer GL Shader

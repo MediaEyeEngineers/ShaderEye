@@ -21,7 +21,7 @@ private slots:
     // btn click event
     void mainCameraOpenClick();
     // DlgSettingCamera signals
-    void readFrame(const uchar *data, qint64 startTime);
+    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height);
 
 private:
     Ui::MainWindow *ui;
