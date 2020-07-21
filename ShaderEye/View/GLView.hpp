@@ -18,13 +18,24 @@ public:
     explicit GLView(QWidget * parent = 0);
     ~GLView();
 
+    int SetCameraFrame(const uchar * data, qint64 startTime);
+    int SetCameraHW(int w, int h);
+
 protected:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
 
 private:
-    Eyer::EyerGLJulia * julia = nullptr;
+    Eyer::EyerGLTexture * rgb = nullptr;
+    Eyer::EyerGLDraw * glDraw = nullptr;
+    Eyer::EyerGLVAO * vao = nullptr;
+
+    int cameraW = 0;
+    int cameraH = 0;
+
+    int w = 0;
+    int h = 0;
 };
 
 #endif

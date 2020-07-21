@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "CameraController.h"
+#include "View/GLView.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,5 +26,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     CameraController *cameraControl = nullptr;
+    GLView * glViewCapture = nullptr;
 };
 #endif // MAINWINDOW_H

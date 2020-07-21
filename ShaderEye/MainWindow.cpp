@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     glViewRender->setGeometry(0, 0, 400, 400);
     ui->RenderLayout->addWidget(glViewRender);
 
-    GLView * glViewCapture = new GLView(this);
+    glViewCapture = new GLView(this);
     ui->CaptureLayout->addWidget(glViewCapture);
 
     // Camera
@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
      * format CAM_FORMAT : rgb24
      */
 
+    glViewCapture->SetCameraHW(CAM_WIDTH, CAM_HEIGHT);
 }
 
 MainWindow::~MainWindow() {
@@ -57,5 +58,6 @@ void MainWindow::mainCameraOpenClick() {
  * @param startTime
  */
 void MainWindow::readFrame(const uchar *data, qint64 startTime) {
-    qDebug() << "m_frameData======> " << data;
+    // qDebug() << "m_frameData======> " << data;
+    glViewCapture->SetCameraFrame(data, startTime);
 }

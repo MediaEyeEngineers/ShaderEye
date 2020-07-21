@@ -5,7 +5,7 @@
 
 namespace Eyer {
 
-    class GL_SHADER {
+    class EYER_GL_SHADER {
     public:
         static char * TEST_VERTEX_SHADER;
         static char * TEST_FRAGMENT_SHADER;
