@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "DlgSettingCamera.h"
+#include "CameraController.h"
 #include "View/GLView.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -21,12 +21,11 @@ private slots:
     // btn click event
     void mainCameraOpenClick();
     // DlgSettingCamera signals
-    void readFrame(const uchar *data, qint64 startTime);
+    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height);
 
 private:
     Ui::MainWindow *ui;
-    DlgSettingCamera *dlgCameraControl = nullptr;
-
+    CameraController *cameraControl = nullptr;
     GLView * glViewCapture = nullptr;
 };
 #endif // MAINWINDOW_H
