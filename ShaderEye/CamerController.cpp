@@ -174,7 +174,7 @@ void CameraController::getFrameByThread(const QVideoFrame &_frame)
     */
 
     // readFrame(m_frameData, _frame.startTime());
-    emit readFrame(_frame.bits(), _frame.pixelFormat(), linesize, height);
+    emit readFrame(_frame.bits(), _frame.pixelFormat(), linesize, width, height);
     qDebug() << "m_frameData======> 1";
 }
 

@@ -15,11 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle(TITLE_MAIN_WIN);
 
-    GLView * glViewRender = new GLView(this);
+    glViewRender = new ShaderGLView(this);
     glViewRender->setGeometry(0, 0, 400, 400);
     ui->RenderLayout->addWidget(glViewRender);
 
-    glViewCapture = new GLView(this);
+    glViewCapture = new ShaderGLView(this);
     ui->CaptureLayout->addWidget(glViewCapture);
 
     // Camera
@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     // btn
     connect(ui->CameraBtn, SIGNAL(clicked()), this, SLOT(mainCameraOpenClick()));
     // readFrame
-    connect(cameraControl, SIGNAL(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int)),
-            this, SLOT(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int)));
+    connect(cameraControl, SIGNAL(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)),
+            this, SLOT(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)));
 
 
     /**
@@ -40,8 +40,6 @@ MainWindow::MainWindow(QWidget *parent)
      * fps CAM_FPS
      * format CAM_FORMAT : rgb24
      */
-
-    glViewCapture->SetCameraHW(CAM_WIDTH, CAM_HEIGHT);
 }
 
 MainWindow::~MainWindow() {
@@ -57,7 +55,18 @@ void MainWindow::mainCameraOpenClick() {
  * @param data
  * @param startTime
  */
-void MainWindow::readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height) {
-    // qDebug() << "m_frameData======> " << data;
-//    glViewCapture->SetCameraFrame(data, startTime);
+void MainWindow::readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height) {
+    if(format == QVideoFrame::PixelFormat::Format_ARGB32){
+        int channel = 4;
+        unsigned char * frameData = (unsigned char *)malloc(width * height * channel);
+        for(int i=0;i<height;i++){
+            memcpy(frameData + width * channel * i, data + linesize * i, width * channel);
+        }
+
+        glViewCapture->SetCameraFrame(frameData, format, linesize, width, height);
+        glViewRender->SetCameraFrame(frameData, format, linesize, width, height);
+
+        free(frameData);
+    }
+
 }

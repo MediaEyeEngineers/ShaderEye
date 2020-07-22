@@ -2,12 +2,12 @@
 #include "EyerGLShader/Shader.hpp"
 #include <QDebug>
 
-GLView::GLView(QWidget * parent) : QOpenGLWidget(parent)
+ShaderGLView::ShaderGLView(QWidget * parent) : QOpenGLWidget(parent)
 {
 
 }
 
-GLView::~GLView()
+ShaderGLView::~ShaderGLView()
 {
     if(rgb != nullptr){
         delete rgb;
@@ -15,31 +15,15 @@ GLView::~GLView()
     }
 }
 
-int GLView::SetCameraHW(int w, int h)
-{
-    cameraW = w;
-    cameraH = h;
-    return 0;
-}
-
-int GLView::SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height)
+int ShaderGLView::SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height)
 {
     if(rgb != nullptr){
-        if(format == QVideoFrame::PixelFormat::Format_ARGB32){
-            int channel = 4;
-            unsigned char * frameData = (unsigned char *)malloc(width * height * channel);
-            for(int i=0;i<height;i++){
-                memcpy(frameData + width * channel * i, data + linesize * i, width * channel);
-            }
-
-            rgb->SetDataRGBAChannel(frameData, width, height);
-            free(frameData);
-        }
+        rgb->SetDataRGBAChannel((unsigned char *)data, width, height);
     }
     update();
 }
 
-void GLView::initializeGL()
+void ShaderGLView::initializeGL()
 {
     initializeOpenGLFunctions();
 
@@ -77,13 +61,13 @@ void GLView::initializeGL()
     glDraw->SetVAO(vao);
 }
 
-void GLView::resizeGL(int _w, int _h)
+void ShaderGLView::resizeGL(int _w, int _h)
 {
     w = _w;
     h = _h;
 }
 
-void GLView::paintGL()
+void ShaderGLView::paintGL()
 {
     if(rgb == nullptr){
         return;
@@ -97,4 +81,6 @@ void GLView::paintGL()
     glDraw->PutTexture("imageTex", rgb, 0);
 
     glDraw->Draw();
+
+    glFinish();
 }

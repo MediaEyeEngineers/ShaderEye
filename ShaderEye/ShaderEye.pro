@@ -15,6 +15,8 @@ SOURCES += \
     Util/CnmernSelThread.cpp \
     main.cpp \
     MainWindow.cpp \
+    View/CameraGLView.cpp \
+    View/ShaderGLView.cpp \
     View/GLView.cpp \
     CameraImage.cpp
 
