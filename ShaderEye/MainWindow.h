@@ -21,11 +21,12 @@ private slots:
     // btn click event
     void mainCameraOpenClick();
     // DlgSettingCamera signals
-    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height);
+    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height);
 
 private:
     Ui::MainWindow *ui;
     CameraController *cameraControl = nullptr;
-    GLView * glViewCapture = nullptr;
+    ShaderGLView * glViewCapture = nullptr;
+    ShaderGLView * glViewRender = nullptr;
 };
 #endif // MAINWINDOW_H

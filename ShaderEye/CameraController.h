@@ -33,7 +33,7 @@ private slots:
     void workFinished(int param1);
 
 signals:
-    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int height);
+    void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize,int width, int height);
 
 private:
     Ui::CameraController *ui;
