@@ -26,7 +26,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     CameraController *cameraControl = nullptr;
-    ShaderGLView * glViewCapture = nullptr;
+    CameraGLView * glViewCapture = nullptr;
     ShaderGLView * glViewRender = nullptr;
 };
 #endif // MAINWINDOW_H

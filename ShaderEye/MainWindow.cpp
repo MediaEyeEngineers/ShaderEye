@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     glViewRender->setGeometry(0, 0, 400, 400);
     ui->RenderLayout->addWidget(glViewRender);
 
-    glViewCapture = new ShaderGLView(this);
+    glViewCapture = new CameraGLView(this);
     ui->CaptureLayout->addWidget(glViewCapture);
 
     // Camera

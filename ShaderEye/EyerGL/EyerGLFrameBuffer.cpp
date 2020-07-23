@@ -1,6 +1,7 @@
 #include "EyerGL.hpp"
 
 #include "GLHeader.h"
+#include <QDebug>
 
 namespace Eyer {
     EyerGLFrameBuffer::EyerGLFrameBuffer(int w, int h, EyerGLTexture * _texture, EyerGLContext * _ctx)

@@ -64,7 +64,7 @@ void CnmernSelThread::doWork() {
 }
 
 void CnmernSelThread::recvCaptureFrame(const QVideoFrame & frame) {
-    qDebug() << "recvCaptureFrame======> 1";
+    // qDebug() << "recvCaptureFrame======> 1";
     emit getFrameByThread(frame);
 }
 

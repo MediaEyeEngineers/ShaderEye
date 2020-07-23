@@ -1,6 +1,7 @@
 #include "GLView.hpp"
 #include "EyerGLShader/Shader.hpp"
 #include <QDebug>
+#include "Component/ShaderEyeComponent.hpp"
 
 ShaderGLView::ShaderGLView(QWidget * parent) : QOpenGLWidget(parent)
 {
@@ -17,6 +18,8 @@ ShaderGLView::~ShaderGLView()
 
 int ShaderGLView::SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height)
 {
+    cameraW = width;
+    cameraH = height;
     if(rgb != nullptr){
         rgb->SetDataRGBAChannel((unsigned char *)data, width, height);
     }
@@ -75,12 +78,29 @@ void ShaderGLView::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Eyer::EyerMat4x4 mat;
+    Eyer::EyerGLTexture cameraTexture(this);
+    Eyer::EyerGLFrameBuffer cameraFrameBuffer(cameraW, cameraH, nullptr, this);
 
+    ShaderEyeBGRACamera cameraFrameComponent(this);
+    cameraFrameComponent.SetTexture(rgb);
+    cameraFrameComponent.Draw();
+
+    cameraFrameBuffer.AddComponent(&cameraFrameComponent);
+    cameraFrameBuffer.Draw();
+
+
+    // Eyer::EyerGLFrameBuffer targetFrameBuffer(w, h, nullptr, this);
+
+    /*
+
+
+
+    Eyer::EyerMat4x4 mat;
     glDraw->PutMatrix4fv("mvp", mat);
     glDraw->PutTexture("imageTex", rgb, 0);
 
     glDraw->Draw();
+    */
 
     glFinish();
 }
