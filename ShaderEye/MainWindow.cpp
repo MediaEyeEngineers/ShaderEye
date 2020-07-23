@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // btn
     connect(ui->CameraBtn, SIGNAL(clicked()), this, SLOT(mainCameraOpenClick()));
+    connect(ui->RenderBtn, SIGNAL(clicked()), this, SLOT(mainRenderCompileClick()));
     // readFrame
     connect(cameraControl, SIGNAL(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)),
             this, SLOT(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)));
@@ -48,6 +49,18 @@ MainWindow::~MainWindow() {
 
 void MainWindow::mainCameraOpenClick() {
     cameraControl->exec();
+}
+
+void MainWindow::mainRenderCompileClick() {
+    QString vertexCode = ui->VertexText->toPlainText();
+    QString fragCode = ui->FragText->toPlainText();
+
+    qDebug() << vertexCode;
+    qDebug() << fragCode;
+
+    /**
+     * @TODO 这里渲染编译
+     */
 }
 
 /**

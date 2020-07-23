@@ -20,6 +20,7 @@ public:
 private slots:
     // btn click event
     void mainCameraOpenClick();
+    void mainRenderCompileClick();
     // DlgSettingCamera signals
     void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height);
 
