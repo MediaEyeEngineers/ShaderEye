@@ -79,11 +79,10 @@ void ShaderGLView::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     Eyer::EyerGLTexture cameraTexture(this);
-    Eyer::EyerGLFrameBuffer cameraFrameBuffer(cameraW, cameraH, nullptr, this);
+    Eyer::EyerGLFrameBuffer cameraFrameBuffer(cameraW, cameraH, &cameraTexture, this);
 
     ShaderEyeBGRACamera cameraFrameComponent(this);
     cameraFrameComponent.SetTexture(rgb);
-    cameraFrameComponent.Draw();
 
     cameraFrameBuffer.AddComponent(&cameraFrameComponent);
     cameraFrameBuffer.Draw();
@@ -91,16 +90,41 @@ void ShaderGLView::paintGL()
 
     // Eyer::EyerGLFrameBuffer targetFrameBuffer(w, h, nullptr, this);
 
-    /*
+    ShaderEyeRender shaderRender(this);
 
 
+    char * TEST_TEXTURE_VERTEX_SHADER = (char *)SHADER(
+        layout (location = 0) in vec3 pos;
+        layout (location = 1) in vec3 coor;
 
-    Eyer::EyerMat4x4 mat;
-    glDraw->PutMatrix4fv("mvp", mat);
-    glDraw->PutTexture("imageTex", rgb, 0);
+        out vec3 outCoor;
 
-    glDraw->Draw();
-    */
+        void main(){
+            outCoor = coor;
+            gl_Position = vec4(pos, 1.0);
+        }
+    );
+
+    char * TEST_TEXTURE_FRAGMENT_SHADER = (char *)SHADER(
+        out vec4 color;
+        uniform sampler2D cameraTex;
+        in vec3 outCoor;
+        void main(){
+            vec2 TexCoords = vec2(1.0 - outCoor.x, 1.0 - outCoor.y);
+            vec4 color_t = texture(cameraTex, TexCoords);
+
+            color.x = color_t.z;
+            color.y = color_t.y;
+            color.z = color_t.x;
+            color.w = color_t.w;
+        }
+    );
+    shaderRender.SetShader(TEST_TEXTURE_VERTEX_SHADER, TEST_TEXTURE_FRAGMENT_SHADER);
+    shaderRender.SetCameraTexture(&cameraTexture);
+    shaderRender.Draw();
+
+    // targetFrameBuffer.AddComponent(&shaderRender);
+    // targetFrameBuffer.Draw();
 
     glFinish();
 }

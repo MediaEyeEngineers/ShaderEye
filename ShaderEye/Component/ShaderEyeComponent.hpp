@@ -24,4 +24,24 @@ private:
 };
 
 
+class ShaderEyeRender : public Eyer::EyerGLComponent
+{
+public:
+    ShaderEyeRender(EyerGLContext * _ctx);
+    ~ShaderEyeRender();
+
+    int SetCameraTexture(Eyer::EyerGLTexture * _cameraTexture);
+
+    int SetShader(const char * vertex, const char * fragment);
+
+    virtual int Draw();
+private:
+    EyerGLContext * ctx = nullptr;
+    Eyer::EyerGLTexture * cameraTexture = nullptr;
+
+    Eyer::EyerGLDraw * draw = nullptr;
+    Eyer::EyerGLVAO * vao = nullptr;
+};
+
+
 #endif

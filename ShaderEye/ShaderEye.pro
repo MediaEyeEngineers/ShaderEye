@@ -19,7 +19,8 @@ SOURCES += \
     View/ShaderGLView.cpp \
     View/GLView.cpp \
     CameraImage.cpp \
-    Component/ShaderEyeBGRACamera.cpp
+    Component/ShaderEyeBGRACamera.cpp \
+    Component/ShaderEyeRender.cpp
 
 HEADERS += \
     CameraController.h \

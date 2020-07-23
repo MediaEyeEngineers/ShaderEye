@@ -14,7 +14,7 @@ namespace Eyer {
         texture = _texture;
         if(texture == nullptr){
             // 使用默认 Framebuffer
-            fbo = 0;
+            fbo = -1;
         }
         else{
 #ifdef QT_EYER_PLAYER
@@ -116,7 +116,7 @@ namespace Eyer {
         }
 
 #ifdef QT_EYER_PLAYER
-        ctx->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ctx->glBindFramebuffer(GL_FRAMEBUFFER, -1);
 #else
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #endif
