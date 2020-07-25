@@ -39,11 +39,13 @@ namespace Eyer{
         }
     }
 
-    int EyerGLShader::Compile()
+    int EyerGLShader::Compile(EyerGLShaderError & shaderError)
     {
         if(shaderId == 0){
             return -1;
         }
+
+        shaderError.shaderType = type;
 
 #ifdef QT_EYER_PLAYER
         // EyerLog("Shader Src:\n %s\n", src.str);
@@ -54,12 +56,17 @@ namespace Eyer{
         int InfoLogLength;
         ctx->glGetShaderiv(shaderId, GL_COMPILE_STATUS, &Result);
         ctx->glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+
+        shaderError.errorLen = InfoLogLength;
+
         if ( InfoLogLength > 0 ){
             std::vector<char> ShaderErrorMessage(InfoLogLength+1);
             ctx->glGetShaderInfoLog(shaderId, InfoLogLength, NULL, &ShaderErrorMessage[0]);
             EyerLog("%s\n", &ShaderErrorMessage[0]);
 
             EyerLog("Shader Src:\n %s\n", src.str);
+
+            shaderError.error = &ShaderErrorMessage[0];
         }
 #else
         // EyerLog("Shader Src:\n %s\n", src.str);

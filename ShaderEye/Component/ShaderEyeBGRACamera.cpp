@@ -49,7 +49,11 @@ ShaderEyeBGRACamera::ShaderEyeBGRACamera(EyerGLContext * _ctx)
     );
 
     bgra = new Eyer::EyerGLDraw(BGRA_TEXTURE_VERTEX_SHADER, BGRA_TEXTURE_FRAGMENT_SHADER, ctx);
-    bgra->Init();
+
+    Eyer::EyerGLShaderError vertexShaderError;
+    Eyer::EyerGLShaderError fragmentShaderError;
+    Eyer::EyerGLProgramError programError;
+    bgra->Init(vertexShaderError, fragmentShaderError, programError);
 
     vao = new Eyer::EyerGLVAO(ctx);
 

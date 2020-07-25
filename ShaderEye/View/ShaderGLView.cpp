@@ -36,10 +36,22 @@ int ShaderGLView::SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat for
     update();
 }
 
-int ShaderGLView::SetShader(QString _vertex, QString _fragment)
+int ShaderGLView::SetShader(QString _vertex, QString _fragment, Eyer::EyerGLShaderError & vertexShaderError, Eyer::EyerGLShaderError & fragmentShaderError, Eyer::EyerGLProgramError & programError)
 {
     vertex = _vertex;
     fragment = _fragment;
+
+    shaderRender->SetShader(vertex.toStdString().c_str(), fragment.toStdString().c_str(), vertexShaderError, fragmentShaderError, programError);
+    isShaderOk = true;
+    if(vertexShaderError.errorLen > 0){
+        isShaderOk = false;
+    }
+    if(fragmentShaderError.errorLen > 0){
+        isShaderOk = false;
+    }
+    if(programError.errorLen > 0){
+        isShaderOk = false;
+    }
 
     return 0;
 }
@@ -77,15 +89,14 @@ void ShaderGLView::paintGL()
     cameraFrameBuffer.AddComponent(cameraFrameComponent);
     cameraFrameBuffer.Draw();
 
-    makeCurrent();
+    if(isShaderOk){
+        makeCurrent();
 
-
-
-    Eyer::EyerGLFrameBuffer targetFrameBuffer(w * 2, h * 2, nullptr, this);
-    shaderRender->SetShader(vertex.toStdString().c_str(), fragment.toStdString().c_str());
-    shaderRender->SetCameraTexture(cameraTexture);
-    targetFrameBuffer.AddComponent(shaderRender);
-    targetFrameBuffer.Draw();
+        Eyer::EyerGLFrameBuffer targetFrameBuffer(w * 2, h * 2, nullptr, this);
+        shaderRender->SetCameraTexture(cameraTexture);
+        targetFrameBuffer.AddComponent(shaderRender);
+        targetFrameBuffer.Draw();
+    }
 
     makeCurrent();
 

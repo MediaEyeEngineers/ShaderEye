@@ -22,13 +22,13 @@ namespace Eyer
         }
     }
 
-    int EyerGLDraw::Init()
+    int EyerGLDraw::Init(EyerGLShaderError & vertexShaderError, EyerGLShaderError & fragmentShaderError, EyerGLProgramError & programError)
     {
         if(program == nullptr){
             return -1;
         }
 
-        program->LinkProgram();
+        program->LinkProgram(vertexShaderError, fragmentShaderError, programError);
 
         return 0;
     }

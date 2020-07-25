@@ -24,7 +24,11 @@ namespace Eyer
         };
 
         textureDraw = new EyerGLDraw(EYER_GL_SHADER::JULIA_VERTEX_SHADER, EYER_GL_SHADER::JULIA_FRAGMENT_SHADER, ctx);
-        textureDraw->Init();
+
+        Eyer::EyerGLShaderError vertexShaderError;
+        Eyer::EyerGLShaderError fragmentShaderError;
+        Eyer::EyerGLProgramError programError;
+        textureDraw->Init(vertexShaderError, fragmentShaderError, programError);
 
         vao = new EyerGLVAO(ctx);
 
@@ -35,7 +39,6 @@ namespace Eyer
         textureDraw->SetVAO(vao);
 
         startTime = 0;
-        // startTime = Eyer::EyerTime::GetTime() * 1.0f;
     }
 
     EyerGLJulia::~EyerGLJulia()

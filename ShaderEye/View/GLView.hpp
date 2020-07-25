@@ -80,7 +80,7 @@ public:
     explicit ShaderGLView(QWidget * parent = 0);
     ~ShaderGLView();
 
-    int SetShader(QString _vertex, QString _fragment);
+    int SetShader(QString _vertex, QString _fragment, Eyer::EyerGLShaderError & vertexShaderError, Eyer::EyerGLShaderError & fragmentShaderError, Eyer::EyerGLProgramError & programError);
     int SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height);
 
 protected:
@@ -103,6 +103,8 @@ private:
 
     QString vertex;
     QString fragment;
+
+    bool isShaderOk = false;
 };
 
 #endif

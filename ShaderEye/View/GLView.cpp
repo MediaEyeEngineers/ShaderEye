@@ -66,7 +66,11 @@ void GLView::initializeGL()
     };
 
     glDraw = new Eyer::EyerGLDraw(Eyer::EYER_GL_SHADER::MVP_TEXTURE_VERTEX_SHADER, Eyer::EYER_GL_SHADER::MVP_TEXTURE_FRAGMENT_SHADER, this);
-    glDraw->Init();
+
+    Eyer::EyerGLShaderError vertexShaderError;
+    Eyer::EyerGLShaderError fragmentShaderError;
+    Eyer::EyerGLProgramError programError;
+    glDraw->Init(vertexShaderError, fragmentShaderError, programError);
 
     vao = new Eyer::EyerGLVAO(this);
 

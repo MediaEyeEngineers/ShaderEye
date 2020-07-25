@@ -46,7 +46,7 @@ ShaderEyeRender::~ShaderEyeRender()
     }
 }
 
-int ShaderEyeRender::SetShader(const char * vertex, const char * fragment)
+int ShaderEyeRender::SetShader(const char * vertex, const char * fragment, Eyer::EyerGLShaderError & vertexShaderError, Eyer::EyerGLShaderError & fragmentShaderError, Eyer::EyerGLProgramError & programError)
 {
     if(draw != nullptr){
         delete draw;
@@ -54,7 +54,8 @@ int ShaderEyeRender::SetShader(const char * vertex, const char * fragment)
     }
 
     draw = new Eyer::EyerGLDraw(vertex, fragment, ctx);
-    draw->Init();
+
+    draw->Init(vertexShaderError, fragmentShaderError, programError);
 
     draw->SetVAO(vao);
 
