@@ -5,7 +5,7 @@
 #include <QCameraInfo>
 #include <QThread>
 
-#include "CommonSetting.h"
+#include "Util/CommonSetting.h"
 
 CameraController::CameraController(QWidget *parent) :
     QDialog(parent),
@@ -37,7 +37,7 @@ CameraController::~CameraController()
 }
 
 void CameraController::cameraListClick() {
-    ui->GetCameraBtn->setText("Opening...");
+    // ui->GetCameraBtn->setText("Opening...");
 
     int cameraIdx = ui->comboBox_selcamera->currentIndex();
     qDebug() << "currentIndex: " << cameraIdx;

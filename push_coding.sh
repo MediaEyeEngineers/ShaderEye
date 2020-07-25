@@ -5,9 +5,10 @@
 #
 
 commitMsg=${1:-"push at `date`"}
+targetBranch=${2:-"develop"}
 
 git add -A
 git commit -m "${commitMsg}"
-git push origin master
+git push origin ${targetBranch}
 
 echo "FIN"

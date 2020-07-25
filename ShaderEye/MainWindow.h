@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "CameraController.h"
+#include "CompileInfoWindow.h"
 #include "View/GLView.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -20,12 +21,15 @@ public:
 private slots:
     // btn click event
     void mainCameraOpenClick();
+    void mainRenderCompileClick();
     // DlgSettingCamera signals
     void readFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height);
 
 private:
     Ui::MainWindow *ui;
     CameraController *cameraControl = nullptr;
+    CompileInfoWindow *compileDiglogControl = nullptr;
+    
     CameraGLView * glViewCapture = nullptr;
     ShaderGLView * glViewRender = nullptr;
 };
