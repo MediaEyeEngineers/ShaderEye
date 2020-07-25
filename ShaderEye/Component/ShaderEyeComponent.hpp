@@ -32,7 +32,7 @@ public:
 
     int SetCameraTexture(Eyer::EyerGLTexture * _cameraTexture);
 
-    int SetShader(const char * vertex, const char * fragment);
+    int SetShader(const char * vertex, const char * fragment, Eyer::EyerGLShaderError & vertexShaderError, Eyer::EyerGLShaderError & fragmentShaderError, Eyer::EyerGLProgramError & programError);
 
     virtual int Draw();
 private:

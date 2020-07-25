@@ -51,6 +51,21 @@ namespace Eyer
         FRAGMENT_SHADER
     };
 
+    class EyerGLShaderError
+    {
+    public:
+        EyerGLShaderType shaderType;
+        int errorLen;
+        EyerString error;
+    };
+
+    class EyerGLProgramError
+    {
+    public:
+        int errorLen;
+        EyerString error;
+    };
+
     class EyerGLShader : public EyerGLCMD
     {
     private:
@@ -63,7 +78,7 @@ namespace Eyer
         EyerGLShader(EyerGLShaderType type, EyerString src, EyerGLContext * _ctx = nullptr);
         ~EyerGLShader();
 
-        int Compile();
+        int Compile(EyerGLShaderError & shaderError);
 
         unsigned int GL_GetShaderId();
     };
@@ -80,7 +95,7 @@ namespace Eyer
     public:
         EyerGLProgram(EyerString vertexShaderSrc, EyerString fragmentShaderSrc, EyerGLContext * _ctx = nullptr);
         ~EyerGLProgram();
-        int LinkProgram();
+        int LinkProgram(EyerGLShaderError & vertexShaderError, EyerGLShaderError & fragmentShaderError, EyerGLProgramError & programError);
         int UseProgram();
 
         int PutUniform1i(EyerString key, int value);
@@ -129,7 +144,7 @@ namespace Eyer
         EyerGLDraw(EyerString vertexShaderSrc, EyerString fragmentShaderSrc, EyerGLContext * ctx = nullptr);
         ~EyerGLDraw();
 
-        int Init();
+        int Init(EyerGLShaderError & vertexShaderError, EyerGLShaderError & fragmentShaderError, EyerGLProgramError & programError);
 
         int SetVAO(EyerGLVAO * vao);
         int PutTexture(EyerString uniform, EyerGLTexture * texture, int textureIndex = 0);

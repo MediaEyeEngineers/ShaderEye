@@ -45,6 +45,27 @@ MainWindow::MainWindow(QWidget *parent)
      * format CAM_FORMAT : rgb24
      */
 
+
+}
+
+MainWindow::~MainWindow() {
+    delete ui;
+}
+
+void MainWindow::mainCameraOpenClick() {
+    cameraControl->exec();
+}
+
+void MainWindow::mainRenderCompileClick() {
+    QString vertexCode = ui->VertexText->toPlainText();
+    QString fragCode = ui->FragText->toPlainText();
+
+    qDebug() << vertexCode;
+    qDebug() << fragCode;
+
+    /**
+     * @TODO 这里渲染编译
+     */
     char * TEST_TEXTURE_VERTEX_SHADER = (char *)SHADER(
         layout (location = 0) in vec3 pos;
         layout (location = 1) in vec3 coor;
@@ -67,27 +88,12 @@ MainWindow::MainWindow(QWidget *parent)
         }
     );
 
-    glViewRender->SetShader(TEST_TEXTURE_VERTEX_SHADER, TEST_TEXTURE_FRAGMENT_SHADER);
-}
+    Eyer::EyerGLShaderError vertexShaderError;
+    Eyer::EyerGLShaderError fragmentShaderError;
+    Eyer::EyerGLProgramError programError;
 
-MainWindow::~MainWindow() {
-    delete ui;
-}
-
-void MainWindow::mainCameraOpenClick() {
-    cameraControl->exec();
-}
-
-void MainWindow::mainRenderCompileClick() {
-    QString vertexCode = ui->VertexText->toPlainText();
-    QString fragCode = ui->FragText->toPlainText();
-
-    qDebug() << vertexCode;
-    qDebug() << fragCode;
-
-    /**
-     * @TODO 这里渲染编译
-     */
+    glViewRender->SetShader(vertexCode, fragCode, vertexShaderError, fragmentShaderError, programError);
+    // glViewRender->SetShader(TEST_TEXTURE_VERTEX_SHADER, TEST_TEXTURE_FRAGMENT_SHADER, vertexShaderError, fragmentShaderError, programError);
 
     // test log panel
     if (true) {
@@ -96,7 +102,6 @@ void MainWindow::mainRenderCompileClick() {
         compileDiglogControl->setCompileLog(currentDataTimeStr);
         compileDiglogControl->show();
     }
-
 }
 
 /**

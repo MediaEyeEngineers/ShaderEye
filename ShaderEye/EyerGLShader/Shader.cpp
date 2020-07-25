@@ -273,7 +273,7 @@ namespace Eyer
         uniform sampler2D imageTex;
         in vec3 outCoor;
         void main(){
-            vec2 TexCoords = vec2(outCoor.x, 1.0 - outCoor.y);
+            vec2 TexCoords = vec2(1.0 - outCoor.x, 1.0 - outCoor.y);
             vec4 color_t = texture(imageTex, TexCoords);
 
             color.x = color_t.z;

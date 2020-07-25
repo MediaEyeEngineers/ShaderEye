@@ -30,13 +30,13 @@ namespace Eyer
         }
     }
 
-    int EyerGLProgram::LinkProgram()
+    int EyerGLProgram::LinkProgram(EyerGLShaderError & vertexShaderError, EyerGLShaderError & fragmentShaderError, EyerGLProgramError & programError)
     {
         Eyer::EyerGLShader vertexShader(Eyer::EyerGLShaderType::VERTEX_SHADER, vertexShaderSrc, ctx);
-        vertexShader.Compile();
+        vertexShader.Compile(vertexShaderError);
 
         Eyer::EyerGLShader fragmentShader(Eyer::EyerGLShaderType::FRAGMENT_SHADER, fragmentShaderSrc, ctx);
-        fragmentShader.Compile();
+        fragmentShader.Compile(fragmentShaderError);
 
 #ifdef QT_EYER_PLAYER
         ctx->glAttachShader(programId, vertexShader.GL_GetShaderId());
@@ -50,13 +50,18 @@ namespace Eyer
         // Check the program
         ctx->glGetProgramiv(programId, GL_LINK_STATUS, &Result);
         ctx->glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+
+        programError.errorLen = InfoLogLength;
+
         if ( InfoLogLength > 0 ){
             std::vector<char> ProgramErrorMessage(InfoLogLength+1);
             ctx->glGetProgramInfoLog(programId, InfoLogLength, NULL, &ProgramErrorMessage[0]);
             EyerLog("%s\n", &ProgramErrorMessage[0]);
 
-            EyerLog("%s\n", vertexShaderSrc.str);
-            EyerLog("%s\n", fragmentShaderSrc.str);
+            // EyerLog("%s\n", vertexShaderSrc.str);
+            // EyerLog("%s\n", fragmentShaderSrc.str);
+
+            programError.error = &ProgramErrorMessage[0];
         }
 #else
         glAttachShader(programId, vertexShader.GL_GetShaderId());
