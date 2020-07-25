@@ -37,7 +37,7 @@ CameraController::~CameraController()
 }
 
 void CameraController::cameraListClick() {
-    ui->GetCameraBtn->setText("Opening...");
+    // ui->GetCameraBtn->setText("Opening...");
 
     int cameraIdx = ui->comboBox_selcamera->currentIndex();
     qDebug() << "currentIndex: " << cameraIdx;
