@@ -13,6 +13,24 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+background-color: #ff0000;
+border-style: outset;
+border-width: 2px;
+border-radius: 6px;
+border-color: beige;
+font: bold 13px;
+min-width: 8em;
+padding: 4px;
+color:white;
+}
+
+QPushButton:pressed {
+background-color: green;
+color:black;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
