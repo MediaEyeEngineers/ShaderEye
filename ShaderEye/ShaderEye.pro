@@ -12,6 +12,7 @@ DEFINES += QT_EYER_PLAYER
 
 SOURCES += \
     CamerController.cpp \
+    DialogCompileLogWindow.cpp \
     Util/CnmernSelThread.cpp \
     main.cpp \
     MainWindow.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 HEADERS += \
     CameraController.h \
     CommonSetting.h \
+    DialogCompileLogWindow.h \
     MainWindow.h \
     Util/CnmernSelThread.h \
     View/GLView.hpp \
@@ -30,6 +32,7 @@ HEADERS += \
 
 FORMS += \
     CameraController.ui \
+    DialogCompileLogWindow.ui \
     MainWindow.ui
 
 
