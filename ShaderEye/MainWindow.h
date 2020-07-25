@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "CameraController.h"
+#include "CompileInfoWindow.h"
 #include "View/GLView.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     CameraController *cameraControl = nullptr;
+    CompileInfoWindow *compileDiglogControl = nullptr;
     ShaderGLView * glViewCapture = nullptr;
     ShaderGLView * glViewRender = nullptr;
 };

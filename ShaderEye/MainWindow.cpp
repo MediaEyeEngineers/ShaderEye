@@ -1,12 +1,13 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include <QDateTime>
 
 /**
  * @date 2020/07/19
  * @author changyanlong github.com/numberwolf q531365872
  */
 #include "View/GLView.hpp"
-#include "CommonSetting.h"
+#include "Util/CommonSetting.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cameraControl, SIGNAL(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)),
             this, SLOT(readFrame(const uchar *, QVideoFrame::PixelFormat, int, int, int)));
 
+    // DialogCompile
+    compileDiglogControl = new CompileInfoWindow(this);
 
     /**
      * @todo 这里设置Opengl？
@@ -61,6 +64,15 @@ void MainWindow::mainRenderCompileClick() {
     /**
      * @TODO 这里渲染编译
      */
+
+    // test log panel
+    if (true) {
+        QDateTime currentDataTimeInfo = QDateTime::currentDateTime();
+        QString currentDataTimeStr = currentDataTimeInfo.toString("yyyy-MM-dd hh:mm::ss.zzz");
+        compileDiglogControl->setCompileLog(currentDataTimeStr);
+        compileDiglogControl->show();
+    }
+
 }
 
 /**

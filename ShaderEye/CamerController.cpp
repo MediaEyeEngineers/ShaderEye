@@ -5,7 +5,7 @@
 #include <QCameraInfo>
 #include <QThread>
 
-#include "CommonSetting.h"
+#include "Util/CommonSetting.h"
 
 CameraController::CameraController(QWidget *parent) :
     QDialog(parent),
