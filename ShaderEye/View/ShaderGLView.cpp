@@ -1,6 +1,7 @@
 #include "GLView.hpp"
 #include "EyerGLShader/Shader.hpp"
 #include <QDebug>
+#include "Component/ShaderEyeComponent.hpp"
 
 ShaderGLView::ShaderGLView(QWidget * parent) : QOpenGLWidget(parent)
 {
@@ -13,14 +14,34 @@ ShaderGLView::~ShaderGLView()
         delete rgb;
         rgb = nullptr;
     }
+
+    if(cameraTexture != nullptr){
+        delete cameraTexture;
+        cameraTexture = nullptr;
+    }
+
+    if(cameraFrameComponent != nullptr){
+        delete cameraFrameComponent;
+        cameraFrameComponent = nullptr;
+    }
 }
 
 int ShaderGLView::SetCameraFrame(const uchar *data, QVideoFrame::PixelFormat format, int linesize, int width, int height)
 {
+    cameraW = width;
+    cameraH = height;
     if(rgb != nullptr){
         rgb->SetDataRGBAChannel((unsigned char *)data, width, height);
     }
     update();
+}
+
+int ShaderGLView::SetShader(QString _vertex, QString _fragment)
+{
+    vertex = _vertex;
+    fragment = _fragment;
+
+    return 0;
 }
 
 void ShaderGLView::initializeGL()
@@ -30,35 +51,9 @@ void ShaderGLView::initializeGL()
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     rgb = new Eyer::EyerGLTexture(this);
-
-
-    float vertex[] = {
-            1.0, 1.0, 0.0,
-            1.0, -1.0, 0.0,
-            -1.0, -1.0, 0.0,
-            -1.0, 1.0, 0.0
-    };
-    float coor[] = {
-            1.0, 1.0, 0.0,
-            1.0, 0.0, 0.0,
-            0.0, 0.0, 0.0,
-            0.0, 1.0, 0.0
-    };
-    unsigned int vertexIndex[] = {
-            0, 1, 2,
-            0, 2, 3
-    };
-
-    glDraw = new Eyer::EyerGLDraw(Eyer::EYER_GL_SHADER::MVP_TEXTURE_VERTEX_SHADER, Eyer::EYER_GL_SHADER::MVP_TEXTURE_FRAGMENT_SHADER, this);
-    glDraw->Init();
-
-    vao = new Eyer::EyerGLVAO(this);
-
-    vao->AddVBO(vertex, sizeof(vertex), 0);
-    vao->AddVBO(coor, sizeof(coor), 1);
-    vao->SetEBO(vertexIndex, sizeof(vertexIndex));
-
-    glDraw->SetVAO(vao);
+    cameraTexture = new Eyer::EyerGLTexture(this);
+    cameraFrameComponent = new ShaderEyeBGRACamera(this);
+    shaderRender = new ShaderEyeRender(this);
 }
 
 void ShaderGLView::resizeGL(int _w, int _h)
@@ -73,14 +68,26 @@ void ShaderGLView::paintGL()
         return;
     }
 
+    makeCurrent();
+
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Eyer::EyerMat4x4 mat;
+    Eyer::EyerGLFrameBuffer cameraFrameBuffer(cameraW, cameraH, cameraTexture, this);
+    cameraFrameComponent->SetTexture(rgb);
+    cameraFrameBuffer.AddComponent(cameraFrameComponent);
+    cameraFrameBuffer.Draw();
 
-    glDraw->PutMatrix4fv("mvp", mat);
-    glDraw->PutTexture("imageTex", rgb, 0);
+    makeCurrent();
 
-    glDraw->Draw();
+
+
+    Eyer::EyerGLFrameBuffer targetFrameBuffer(w * 2, h * 2, nullptr, this);
+    shaderRender->SetShader(vertex.toStdString().c_str(), fragment.toStdString().c_str());
+    shaderRender->SetCameraTexture(cameraTexture);
+    targetFrameBuffer.AddComponent(shaderRender);
+    targetFrameBuffer.Draw();
+
+    makeCurrent();
 
     glFinish();
 }
