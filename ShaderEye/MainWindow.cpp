@@ -40,6 +40,30 @@ MainWindow::MainWindow(QWidget *parent)
      * fps CAM_FPS
      * format CAM_FORMAT : rgb24
      */
+
+    char * TEST_TEXTURE_VERTEX_SHADER = (char *)SHADER(
+        layout (location = 0) in vec3 pos;
+        layout (location = 1) in vec3 coor;
+
+        out vec3 outCoor;
+
+        void main(){
+            outCoor = coor;
+            gl_Position = vec4(pos, 1.0);
+        }
+    );
+
+    char * TEST_TEXTURE_FRAGMENT_SHADER = (char *)SHADER(
+        out vec4 color;
+        uniform sampler2D cameraTex;
+        in vec3 outCoor;
+        void main(){
+            vec2 TexCoords = vec2(outCoor.x, outCoor.y);
+            color = texture(cameraTex, TexCoords);
+        }
+    );
+
+    glViewRender->SetShader(TEST_TEXTURE_VERTEX_SHADER, TEST_TEXTURE_FRAGMENT_SHADER);
 }
 
 MainWindow::~MainWindow() {

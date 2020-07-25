@@ -3,6 +3,8 @@
 #include "GLHeader.h"
 #include <QDebug>
 
+#define SCREEN_FRAME_BUFFER -1
+
 namespace Eyer {
     EyerGLFrameBuffer::EyerGLFrameBuffer(int w, int h, EyerGLTexture * _texture, EyerGLContext * _ctx)
     {
@@ -14,7 +16,7 @@ namespace Eyer {
         texture = _texture;
         if(texture == nullptr){
             // 使用默认 Framebuffer
-            fbo = -1;
+            fbo = SCREEN_FRAME_BUFFER;
         }
         else{
 #ifdef QT_EYER_PLAYER
@@ -43,13 +45,13 @@ namespace Eyer {
             if (status != GL_FRAMEBUFFER_COMPLETE) {
                 EyerLog("GL_FRAMEBUFFER_COMPLETE Error!!!!\n");
 
-                if(fbo != 0){
+                if(fbo != SCREEN_FRAME_BUFFER){
 #ifdef QT_EYER_PLAYER
                     ctx->glDeleteFramebuffers(1, &fbo);
 #else
                     glDeleteFramebuffers(1, &fbo);
 #endif
-                    fbo = 0;
+                    fbo = SCREEN_FRAME_BUFFER;
                 }
             }
         }
@@ -57,13 +59,13 @@ namespace Eyer {
 
     EyerGLFrameBuffer::~EyerGLFrameBuffer()
     {
-        if(fbo != 0){
+        if(fbo != SCREEN_FRAME_BUFFER){
 #ifdef QT_EYER_PLAYER
             ctx->glDeleteFramebuffers(1, &fbo);
 #else
             glDeleteFramebuffers(1, &fbo);
 #endif
-            fbo = 0;
+            fbo = SCREEN_FRAME_BUFFER;
         }
         drawList.clear();
         componentList.clear();
@@ -116,9 +118,9 @@ namespace Eyer {
         }
 
 #ifdef QT_EYER_PLAYER
-        ctx->glBindFramebuffer(GL_FRAMEBUFFER, -1);
+        ctx->glBindFramebuffer(GL_FRAMEBUFFER, SCREEN_FRAME_BUFFER);
 #else
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, SCREEN_FRAME_BUFFER);
 #endif
 
         return 0;
@@ -136,13 +138,13 @@ namespace Eyer {
         ctx->glViewport(0, 0, width, height);
         ctx->glClearColor(r, g, b, a);
         ctx->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        ctx->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ctx->glBindFramebuffer(GL_FRAMEBUFFER, SCREEN_FRAME_BUFFER);
 #else
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
         glViewport(0, 0, width, height);
         glClearColor(r, g, b, a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, SCREEN_FRAME_BUFFER);
 #endif
 
         return 0;
