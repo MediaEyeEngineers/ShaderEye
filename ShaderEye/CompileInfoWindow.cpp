@@ -1,11 +1,13 @@
 #include "CompileInfoWindow.h"
 #include "ui_CompileInfoWindow.h"
+#include "Util/CommonSetting.h"
 
 CompileInfoWindow::CompileInfoWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CompileInfoWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle(TITLE_CAMOPEN_WIN);
     connect(ui->OKBtn, SIGNAL(clicked()), this, SLOT(OKBtnClick()));
 }
 

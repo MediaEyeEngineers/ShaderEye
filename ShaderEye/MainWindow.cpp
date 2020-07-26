@@ -36,16 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // DialogCompile
     compileDiglogControl = new CompileInfoWindow(this);
-
-    /**
-     * @todo 这里设置Opengl？
-     * width CAM_WIDTH
-     * height CAM_HEIGHT
-     * fps CAM_FPS
-     * format CAM_FORMAT : rgb24
-     */
-
-
 }
 
 MainWindow::~MainWindow() {
@@ -63,31 +53,6 @@ void MainWindow::mainRenderCompileClick() {
     qDebug() << vertexCode;
     qDebug() << fragCode;
 
-    /**
-     * @TODO 这里渲染编译
-     */
-    char * TEST_TEXTURE_VERTEX_SHADER = (char *)SHADER(
-        layout (location = 0) in vec3 pos;
-        layout (location = 1) in vec3 coor;
-
-        out vec3 outCoor;
-
-        void main(){
-            outCoor = coor;
-            gl_Position = vec4(pos, 1.0);
-        }
-    );
-
-    char * TEST_TEXTURE_FRAGMENT_SHADER = (char *)SHADER(
-        out vec4 color;
-        uniform sampler2D cameraTex;
-        in vec3 outCoor;
-        void main(){
-            vec2 TexCoords = vec2(outCoor.x, outCoor.y);
-            color = texture(cameraTex, TexCoords);
-        }
-    );
-
     Eyer::EyerGLShaderError vertexShaderError;
     Eyer::EyerGLShaderError fragmentShaderError;
     Eyer::EyerGLProgramError programError;
@@ -96,10 +61,25 @@ void MainWindow::mainRenderCompileClick() {
     // glViewRender->SetShader(TEST_TEXTURE_VERTEX_SHADER, TEST_TEXTURE_FRAGMENT_SHADER, vertexShaderError, fragmentShaderError, programError);
 
     // test log panel
-    if (true) {
-        QDateTime currentDataTimeInfo = QDateTime::currentDateTime();
-        QString currentDataTimeStr = currentDataTimeInfo.toString("yyyy-MM-dd hh:mm::ss.zzz");
-        compileDiglogControl->setCompileLog(currentDataTimeStr);
+    QString errorInfo;
+    if (vertexShaderError.errorLen > 0) {
+        errorInfo = QString("Vertex Shader Error: \n %1").arg(vertexShaderError.error.str);
+    }
+
+    if (fragmentShaderError.errorLen > 0) {
+        errorInfo = QString("%1 \n Fragment Shader Error: \n %2")
+                .arg(errorInfo).arg(fragmentShaderError.error.str);
+    }
+
+    if (programError.errorLen > 0) {
+        errorInfo = QString("%1 \n Program Error: \n %2")
+                .arg(errorInfo).arg(programError.error.str);
+    }
+
+    if (errorInfo.length() > 0) {
+        // QDateTime currentDataTimeInfo = QDateTime::currentDateTime();
+        // QString currentDataTimeStr = currentDataTimeInfo.toString("yyyy-MM-dd hh:mm::ss.zzz");
+        compileDiglogControl->setCompileLog(errorInfo);
         compileDiglogControl->show();
     }
 }

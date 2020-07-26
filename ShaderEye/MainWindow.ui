@@ -640,17 +640,16 @@ color:black;
                <number>-1</number>
               </property>
               <property name="plainText">
-               <string>attribute vec4 position;
-attribute vec4 inputTextureCoordinate;
+               <string>#version 330
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec3 coor;
 
-varying vec2 textureCoordinate;
+out vec3 outCoor;
 
-void main()
-{
-	gl_Position = position;
-	textureCoordinate = inputTextureCoordinate.xy;
-}
-</string>
+void main(){
+	outCoor = coor;
+	gl_Position = vec4(pos, 1.0);
+}</string>
               </property>
               <property name="tabStopWidth">
                <number>40</number>
@@ -685,36 +684,36 @@ void main()
                  <colorrole role="WindowText">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>59</red>
-                    <green>55</green>
-                    <blue>255</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Button">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>28</red>
+                    <red>0</red>
                     <green>0</green>
-                    <blue>145</blue>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Text">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>114</red>
-                    <green>131</green>
-                    <blue>252</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="ButtonText">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>49</red>
-                    <green>17</green>
-                    <blue>255</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -750,36 +749,36 @@ void main()
                  <colorrole role="WindowText">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>59</red>
-                    <green>55</green>
-                    <blue>255</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Button">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>28</red>
+                    <red>0</red>
                     <green>0</green>
-                    <blue>145</blue>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Text">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>114</red>
-                    <green>131</green>
-                    <blue>252</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="ButtonText">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>49</red>
-                    <green>17</green>
-                    <blue>255</blue>
+                    <red>0</red>
+                    <green>255</green>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -824,9 +823,9 @@ void main()
                  <colorrole role="Button">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>28</red>
+                    <red>0</red>
                     <green>0</green>
-                    <blue>145</blue>
+                    <blue>0</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -887,18 +886,20 @@ void main()
                <string notr="true">background-color:black;color:#00ff00</string>
               </property>
               <property name="plainText">
-               <string>varying vec2 textureCoordinate;
-uniform sampler2D inputImageTexture;
+               <string>#version 330
+out vec4 color;
+uniform sampler2D cameraTex;
+in vec3 outCoor;
+void main(){
+	vec2 TexCoords = vec2(outCoor.x, outCoor.y);
+	 color = texture(cameraTex, TexCoords);
 
-void main()
-{
-	gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
 	vec4 outputColor;
-	outputColor.r = (gl_FragColor.r * 0.393) + (gl_FragColor.g * 0.769) + (gl_FragColor.b * 0.189);
-	outputColor.g = (gl_FragColor.r * 0.349) + (gl_FragColor.g * 0.686) + (gl_FragColor.b * 0.168);
-	outputColor.b = (gl_FragColor.r * 0.272) + (gl_FragColor.g * 0.534) + (gl_FragColor.b * 0.131);
+	outputColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
+	outputColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
+	outputColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
 	outputColor.a = 1.0;
-	gl_FragColor = outputColor;
+	color = outputColor;
 }</string>
               </property>
               <property name="tabStopWidth">

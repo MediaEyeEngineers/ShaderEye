@@ -24,6 +24,7 @@
 // TITLE
 #define     TITLE_MAIN_WIN                  "ShaderEye - MediaEye Engineers github.com/MediaEyeEngineers"
 #define     TITLE_CAMOPEN_WIN               "Camera Select"
+#define     TITLE_COMPILE_LOG               "Compile Log"
 
 
 /**
