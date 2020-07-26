@@ -11,6 +11,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_EYER_PLAYER
 
 SOURCES += \
+    AboutWindow.cpp \
     CamerController.cpp \
     CompileInfoWindow.cpp \
     Util/CnmernSelThread.cpp \
@@ -20,10 +21,12 @@ SOURCES += \
     View/ShaderGLView.cpp \
     View/GLView.cpp \
     CameraImage.cpp \
+    LoadingWindow.cpp \
     Component/ShaderEyeBGRACamera.cpp \
     Component/ShaderEyeRender.cpp
 
 HEADERS += \
+    AboutWindow.h \
     CameraController.h \
     Util/CommonSetting.h \
     CompileInfoWindow.h \
@@ -31,11 +34,15 @@ HEADERS += \
     Util/CnmernSelThread.h \
     View/GLView.hpp \
     CameraImage.h \
+    LoadingWindow.h \
     Component/ShaderEyeComponent.hpp
 
 FORMS += \
+    AboutWindow.ui \
     CameraController.ui \
     CompileInfoWindow.ui \
+    LoadingWindow.ui \
+    LoadingWindow.ui \
     MainWindow.ui
 
 
@@ -89,3 +96,9 @@ SOURCES += \
     EyerCore/EyerRand.cpp \
     EyerCore/EyerString.cpp \
     EyerCore/EyerTime.cpp \
+
+DISTFILES += \
+    logo_shadereye.png
+
+RESOURCES += \
+    Resources.qrc

@@ -20,6 +20,7 @@ public:
 
 private slots:
     // btn click event
+    void AboutClickListener();
     void mainCameraOpenClick();
     void mainRenderCompileClick();
     // DlgSettingCamera signals

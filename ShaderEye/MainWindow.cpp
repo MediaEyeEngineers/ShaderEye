@@ -1,6 +1,11 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "AboutWindow.h"
 #include <QDateTime>
+//#include <QToolBar>
+//#include <QDebug>
+//#include <QLabel>
+//#include <QMessageBox>
 
 /**
  * @date 2020/07/19
@@ -15,6 +20,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle(TITLE_MAIN_WIN);
+
+    //  Init Menu Bar
+    QMenuBar *mainMenuBar = menuBar();
+    QMenu *menuAboutTwoNB_Engineers    = mainMenuBar->addMenu(STRING_ABOUT);
+    QAction *actionAbout               = menuAboutTwoNB_Engineers->addAction(STRING_ABOUT);
+
+    // sign
+    connect(actionAbout, SIGNAL(triggered()),    this,   SLOT(AboutClickListener()));
 
     glViewRender = new ShaderGLView(this);
     glViewRender->setGeometry(0, 0, 400, 400);
@@ -40,6 +53,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::AboutClickListener()
+{
+    AboutWindow * aboutWindows = new AboutWindow();
+    aboutWindows->show();
 }
 
 void MainWindow::mainCameraOpenClick() {

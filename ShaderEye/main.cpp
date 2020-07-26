@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <QApplication>
 #include <QSurfaceFormat>
+#include <QSplashScreen>
+#include "LoadingWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +15,11 @@ int main(int argc, char *argv[])
     format.setProfile(QSurfaceFormat::CoreProfile);
     QSurfaceFormat::setDefaultFormat(format);
 
-    MainWindow w;
-    w.show();
+//    MainWindow w;
+//    w.show();
+
+    LoadingWindow loading;
+    loading.show();
+
     return a.exec();
 }

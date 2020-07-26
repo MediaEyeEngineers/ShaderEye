@@ -8,6 +8,8 @@
 
 #include <QVideoFrame>
 
+#define STRING_VERSION                      "1.0.0"
+#define STRING_ABOUT                        "关于 About"
 
 /*
  * LOG_PLATFORM
